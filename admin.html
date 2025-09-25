@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helix Admin Panel - Product Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5SjEU2tEH85gKrXrX79yAu1cCeZugOi4",
+            authDomain: "mkspam-c824d.firebaseapp.com",
+            databaseURL: "https://mkspam-c824d-default-rtdb.firebaseio.com",
+            projectId: "mkspam-c824d",
+            storageBucket: "mkspam-c824d.appspot.com",
+            messagingSenderId: "640689755066",
+            appId: "1:640689755066:web:9ad4b790ba104667e70383",
+            measurementId: "G-QBDQW01MBP"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        console.log("[v0] Firebase initialized successfully");
+
+        // Make Firebase services available globally
+        window.db = db;
+        window.storage = storage;
+        window.firebaseModules = {
+            collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot,
+            ref, uploadBytes, getDownloadURL
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("[v0] DOM loaded, initializing admin panel");
+            loadProducts();
+        });
+    </script>
+
+    <style>
+        :root {
+            --color-background: #faf9f7;
+            --color-foreground: #1a1a1a;
+            --color-muted: #f5f4f2;
+            --color-muted-foreground: #6b6b6b;
+            --color-border: #e5e4e2;
+            --color-primary: #1a1a1a;
+            --color-secondary: #8b7355;
+            --color-accent: #d4af37;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-foreground);
+            line-height: 1.6;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        
+        .admin-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased bg-gray-50">
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="font-display text-2xl font-bold text-gray-900">HELIX</div>
+                        <span class="ml-3 text-sm text-gray-500">Admin Panel</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-600">Welcome, Muzakkir</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl admin-shadow">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-yellow-100 rounded-lg">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total Products</p>
+                            <p id="totalProducts" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl admin-shadow">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Active Products</p>
+                            <p id="activeProducts" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl admin-shadow">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-100 rounded-lg">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Collections</p>
+                            <p id="totalCollections" class="text-2xl font-bold text-gray-900">3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Product Section -->
+            <div class="bg-white rounded-xl admin-shadow p-6 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Add New Product</h2>
+                    <button id="toggleAddForm" 
+                            class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors">
+                        <span id="toggleText">Add Product</span>
+                    </button>
+                </div>
+                
+                <form id="productForm" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                            <input type="text" id="productName" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                   placeholder="e.g., Rolex Submariner">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Collection *</label>
+                            <select id="productCollection" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Select Collection</option>
+                                <option value="Classic">Classic Collection</option>
+                                <option value="Sports">Sports Collection</option>
+                                <option value="Luxury">Luxury Collection</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Price (₹) *</label>
+                            <input type="number" id="productPrice" required min="0" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                   placeholder="25000">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Brand</label>
+                            <input type="text" id="productBrand" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                   placeholder="e.g., Rolex, Omega, Seiko">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Model</label>
+                            <input type="text" id="productModel" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                   placeholder="e.g., Submariner, Speedmaster">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Movement Type</label>
+                            <select id="productMovement" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Select Movement</option>
+                                <option value="Automatic">Automatic</option>
+                                <option value="Quartz">Quartz</option>
+                                <option value="Manual">Manual Wind</option>
+                                <option value="Solar">Solar</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Case Material</label>
+                            <select id="productCaseMaterial" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Select Material</option>
+                                <option value="Stainless Steel">Stainless Steel</option>
+                                <option value="Gold">Gold</option>
+                                <option value="Rose Gold">Rose Gold</option>
+                                <option value="Titanium">Titanium</option>
+                                <option value="Ceramic">Ceramic</option>
+                                <option value="Platinum">Platinum</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Case Size (mm)</label>
+                            <input type="number" id="productCaseSize" min="20" max="60" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                   placeholder="42">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Water Resistance</label>
+                            <select id="productWaterResistance" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Select Water Resistance</option>
+                                <option value="30m">30m (3 ATM)</option>
+                                <option value="50m">50m (5 ATM)</option>
+                                <option value="100m">100m (10 ATM)</option>
+                                <option value="200m">200m (20 ATM)</option>
+                                <option value="300m">300m (30 ATM)</option>
+                                <option value="500m+">500m+ (50+ ATM)</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Strap/Bracelet</label>
+                            <select id="productStrap" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Select Strap Type</option>
+                                <option value="Leather">Leather</option>
+                                <option value="Metal Bracelet">Metal Bracelet</option>
+                                <option value="Rubber">Rubber</option>
+                                <option value="NATO">NATO Strap</option>
+                                <option value="Fabric">Fabric</option>
+                                <option value="Ceramic">Ceramic</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                            <select id="productStatus" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="productDescription" rows="4" 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                  placeholder="Detailed description of the watch..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Images *</label>
+                        <input type="file" id="productImages" multiple accept="image/*" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <p class="text-sm text-gray-500 mt-1">Select multiple images (JPG, PNG, WebP)</p>
+                        <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" id="cancelForm" 
+                                class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" id="submitProduct" 
+                                class="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
+                            <span id="submitText">Add Product</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Products List -->
+            <div class="bg-white rounded-xl admin-shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold text-gray-900">Product Inventory</h2>
+                        <div class="flex items-center space-x-4">
+                            <select id="filterCollection" 
+                                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">All Collections</option>
+                                <option value="Classic">Classic</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Luxury">Luxury</option>
+                            </select>
+                            <select id="filterStatus" 
+                                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="productsContainer" class="p-6">
+                    <div id="loadingProducts" class="text-center py-8">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                        <p class="mt-2 text-gray-600">Loading products...</p>
+                    </div>
+                    <div id="noProducts" class="text-center py-8 hidden">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        <p class="text-gray-600">No products found</p>
+                    </div>
+                    <div id="productsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-gray-900">Edit Product</h3>
+                    <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <form id="editProductForm" class="space-y-4">
+                    <!-- Edit form fields will be populated dynamically -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let products = [];
+        let editingProductId = null;
+
+        // Toggle add product form
+        document.getElementById('toggleAddForm').addEventListener('click', () => {
+            const form = document.getElementById('productForm');
+            const toggleText = document.getElementById('toggleText');
+            
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+                toggleText.textContent = 'Cancel';
+            } else {
+                form.classList.add('hidden');
+                toggleText.textContent = 'Add Product';
+                resetForm();
+            }
+        });
+
+
+
+        // Image preview
+        document.getElementById('productImages').addEventListener('change', (e) => {
+            const files = e.target.files;
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+
+            console.log("[v0] Selected files:", files.length);
+
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'image-preview border border-gray-300';
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Product form submission
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            console.log("[v0] Form submitted, starting product upload");
+            
+            const submitBtn = document.getElementById('submitProduct');
+            const submitText = document.getElementById('submitText');
+            const originalText = submitText.textContent;
+            
+            submitBtn.disabled = true;
+            submitText.textContent = 'Uploading...';
+
+            try {
+                const productData = {
+                    name: document.getElementById('productName').value,
+                    collection: document.getElementById('productCollection').value,
+                    price: parseInt(document.getElementById('productPrice').value),
+                    brand: document.getElementById('productBrand').value || '',
+                    model: document.getElementById('productModel').value || '',
+                    movement: document.getElementById('productMovement').value || '',
+                    caseMaterial: document.getElementById('productCaseMaterial').value || '',
+                    caseSize: document.getElementById('productCaseSize').value || '',
+                    waterResistance: document.getElementById('productWaterResistance').value || '',
+                    strap: document.getElementById('productStrap').value || '',
+                    status: document.getElementById('productStatus').value,
+                    description: document.getElementById('productDescription').value || '',
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                };
+
+                console.log("[v0] Product data prepared:", productData);
+
+                // Upload images
+                const imageFiles = document.getElementById('productImages').files;
+                const imageUrls = [];
+
+                console.log("[v0] Uploading", imageFiles.length, "images");
+
+                for (let i = 0; i < imageFiles.length; i++) {
+                    const file = imageFiles[i];
+                    console.log("[v0] Uploading image:", file.name);
+                    
+                    const imageRef = window.firebaseModules.ref(window.storage, `products/${Date.now()}_${file.name}`);
+                    const snapshot = await window.firebaseModules.uploadBytes(imageRef, file);
+                    const downloadURL = await window.firebaseModules.getDownloadURL(snapshot.ref);
+                    imageUrls.push(downloadURL);
+                    
+                    console.log("[v0] Image uploaded:", downloadURL);
+                }
+
+                productData.images = imageUrls;
+
+                console.log("[v0] Saving product to Firestore");
+
+                // Save to Firestore
+                const docRef = await window.firebaseModules.addDoc(window.firebaseModules.collection(window.db, 'products'), productData);
+                
+                console.log("[v0] Product saved with ID:", docRef.id);
+
+                // Reset form
+                resetForm();
+                document.getElementById('productForm').classList.add('hidden');
+                document.getElementById('toggleText').textContent = 'Add Product';
+
+                alert('Product added successfully!');
+                
+                // Reload products to show the new one
+                loadProducts();
+                
+            } catch (error) {
+                console.error('[v0] Error adding product:', error);
+                alert('Error adding product: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitText.textContent = originalText;
+            }
+        });
+
+        document.getElementById('cancelForm').addEventListener('click', () => {
+            document.getElementById('productForm').classList.add('hidden');
+            document.getElementById('toggleText').textContent = 'Add Product';
+            resetForm();
+        });
+
+        // Load products
+        async function loadProducts() {
+            console.log("[v0] Loading products from Firestore");
+            
+            try {
+                const querySnapshot = await window.firebaseModules.getDocs(window.firebaseModules.collection(window.db, 'products'));
+                products = [];
+                
+                querySnapshot.forEach((doc) => {
+                    products.push({ id: doc.id, ...doc.data() });
+                });
+
+                console.log("[v0] Loaded", products.length, "products");
+
+                displayProducts(products);
+                updateStats();
+                
+                document.getElementById('loadingProducts').classList.add('hidden');
+            } catch (error) {
+                console.error('[v0] Error loading products:', error);
+                document.getElementById('loadingProducts').innerHTML = '<p class="text-red-600">Error loading products: ' + error.message + '</p>';
+            }
+        }
+
+        // Display products
+        function displayProducts(productsToShow) {
+            const container = document.getElementById('productsList');
+            const noProducts = document.getElementById('noProducts');
+            
+            if (productsToShow.length === 0) {
+                container.innerHTML = '';
+                noProducts.classList.remove('hidden');
+                return;
+            }
+            
+            noProducts.classList.add('hidden');
+            
+            container.innerHTML = productsToShow.map(product => `
+                <div class="product-card bg-white border border-gray-200 rounded-xl p-6 hover-lift">
+                    <div class="aspect-w-16 aspect-h-9 mb-4">
+                        <img src="${product.images?.[0] || '/placeholder.svg?height=200&width=300'}" 
+                             alt="${product.name}" 
+                             class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900 truncate">${product.name}</h3>
+                            <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(product.status)}">
+                                ${product.status}
+                            </span>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600">${product.brand} ${product.model}</p>
+                        <p class="text-sm text-gray-500">${product.collection} Collection</p>
+                        <p class="text-lg font-bold text-gray-900">₹${product.price?.toLocaleString()}</p>
+                        
+                        <div class="flex space-x-2 pt-4">
+                            <button onclick="editProduct('${product.id}')" 
+                                    class="flex-1 bg-yellow-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 transition-colors text-sm">
+                                Edit
+                            </button>
+                            <button onclick="deleteProduct('${product.id}')" 
+                                    class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get status color
+        function getStatusColor(status) {
+            switch (status) {
+                case 'active': return 'bg-green-100 text-green-800';
+                case 'inactive': return 'bg-gray-100 text-gray-800';
+                case 'sold': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('activeProducts').textContent = products.filter(p => p.status === 'active').length;
+        }
+
+        // Filter products
+        document.getElementById('filterCollection').addEventListener('change', filterProducts);
+        document.getElementById('filterStatus').addEventListener('change', filterProducts);
+
+        function filterProducts() {
+            const collectionFilter = document.getElementById('filterCollection').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+            
+            let filtered = products;
+            
+            if (collectionFilter) {
+                filtered = filtered.filter(p => p.collection === collectionFilter);
+            }
+            
+            if (statusFilter) {
+                filtered = filtered.filter(p => p.status === statusFilter);
+            }
+            
+            displayProducts(filtered);
+        }
+
+        // Edit product
+        async function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            editingProductId = productId;
+            
+            // Populate edit form
+            const editForm = document.getElementById('editProductForm');
+            editForm.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                        <input type="text" id="editName" value="${product.name}" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Collection</label>
+                        <select id="editCollection" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">
+                            <option value="Classic" ${product.collection === 'Classic' ? 'selected' : ''}>Classic</option>
+                            <option value="Sports" ${product.collection === 'Sports' ? 'selected' : ''}>Sports</option>
+                            <option value="Luxury" ${product.collection === 'Luxury' ? 'selected' : ''}>Luxury</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Price (₹)</label>
+                        <input type="number" id="editPrice" value="${product.price}" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select id="editStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">
+                            <option value="active" ${product.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="inactive" ${product.status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                            <option value="sold" ${product.status === 'sold' ? 'selected' : ''}>Sold</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="editDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">${product.description || ''}</textarea>
+                </div>
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                        Update Product
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            editingProductId = null;
+        }
+
+        document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
+
+        // Update product
+        document.getElementById('editProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!editingProductId) return;
+
+            try {
+                const updatedData = {
+                    name: document.getElementById('editName').value,
+                    collection: document.getElementById('editCollection').value,
+                    price: parseInt(document.getElementById('editPrice').value),
+                    status: document.getElementById('editStatus').value,
+                    description: document.getElementById('editDescription').value,
+                    updatedAt: new Date()
+                };
+
+                await window.firebaseModules.updateDoc(
+                    window.firebaseModules.doc(window.db, 'products', editingProductId), 
+                    updatedData
+                );
+
+                closeEditModal();
+                loadProducts();
+                alert('Product updated successfully!');
+                
+            } catch (error) {
+                console.error('[v0] Error updating product:', error);
+                alert('Error updating product: ' + error.message);
+            }
+        });
+
+        // Delete product
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                await window.firebaseModules.deleteDoc(window.firebaseModules.doc(window.db, 'products', productId));
+                loadProducts();
+                alert('Product deleted successfully!');
+            } catch (error) {
+                console.error('[v0] Error deleting product:', error);
+                alert('Error deleting product: ' + error.message);
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+        }
+
+        // Make functions globally available
+        window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+        window.closeEditModal = closeEditModal;
+    </script>
+</body>
+</html>
