@@ -41,7 +41,8 @@
     .focus-ring:focus-visible { outline: 2px solid #d4af37; outline-offset: 2px; border-radius: .5rem; }
     .shield { display:inline-flex; align-items:center; gap:.5rem; }
     .nav-badge { min-width: 1.25rem; height: 1.25rem; border-radius: 9999px; background: #111827; color: #fff; font-size: .75rem; display:inline-flex; align-items:center; justify-content:center; }
-    .sticky-controls { position: sticky; top: 64px; z-index: 40; }
+    /* make toolbar stick under viewport top (navbar is not fixed anymore) */
+    .sticky-controls { position: sticky; top: 0; z-index: 40; }
     .watermark { position:absolute; bottom:.5rem; left:.5rem; background: rgba(255,255,255,.85); border:1px solid var(--color-border); padding:.15rem .35rem; border-radius:.375rem; display:flex; align-items:center; gap:.35rem; }
     .watermark img { width: 16px; height: 16px; object-fit: contain; }
     .faq details[open] summary svg { transform: rotate(180deg); }
@@ -51,7 +52,8 @@
   </style>
 </head>
 <body class="antialiased">
-   
+   <!-- remove stray visible labels; convert to comments -->
+   <!-- Trust Topbar -->
   <div class="topbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between text-sm">
       <div class="hidden sm:flex items-center gap-4">
@@ -75,8 +77,8 @@
     </div>
   </div>
 
-   
-  <header class=" top-10 inset-x-0 z-50 bg-white/90 backdrop-blur border-b border-[var(--color-border)]">
+   <!-- navbar should not be fixed -->
+  <header class="relative inset-x-0 z-50 bg-white/90 backdrop-blur border-b border-[var(--color-border)]">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between" aria-label="Primary">
       <a href="#home" class="flex items-center gap-3 focus-ring">
         <img src="hel.webp" alt="Helix logo" class="h-8 w-8 object-contain" onerror="this.style.display='none'"/>
@@ -137,8 +139,8 @@
     </div>
   </header>
 
-
-  <section id="home" class="hero-gradient min-h-[88vh] flex items-center pt-[6.5rem]">
+   <!-- hero no longer needs large padding for fixed navbar -->
+  <section id="home" class="hero-gradient min-h-[88vh] flex items-center pt-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--color-border)] bg-white text-sm mb-4">
         <img src="hel.webp" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'"/>
@@ -157,7 +159,7 @@
     </div>
   </section>
 
-   
+   Featured
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
       <div>
@@ -187,20 +189,21 @@
       </div>
       <div>
         <div class="relative">
-          <img src="hel.webp" alt="Premium Helix Watch" class="w-full h-auto rounded-2xl hover-lift"/>
+           <!-- fix placeholder 404 by using local image -->
+          <img src="/placeholder.jpg" alt="Premium Helix Watch" class="w-full h-auto rounded-2xl hover-lift"/>
           <div class="watermark" aria-hidden="true">
             <img src="hel.webp" alt="" onerror="this.style.display='none'"/><span class="text-xs font-semibold">HELIX</span>
           </div>
           <div class="absolute -bottom-6 -right-6 bg-yellow-600 text-white p-4 rounded-xl">
             <div class="text-sm font-medium">Starting from</div>
-            <div class="text-2xl font-bold"> ₹   999 </div>
+            <div class="text-2xl font-bold">₹15,000</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-   
+   Collections
   <section id="collections" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
@@ -210,7 +213,7 @@
         </p>
       </div>
 
-    
+       <!-- Toolbar -->
       <div class="sticky-controls bg-gray-50/95 backdrop-blur border-y border-[var(--color-border)]">
         <div class="py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div class="flex flex-wrap gap-2">
@@ -240,7 +243,7 @@
         </div>
       </div>
 
-    
+       <!-- Grid -->
       <div id="products-container" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8" aria-live="polite">
         <div class="h-56 rounded-xl loading-skeleton"></div>
         <div class="h-56 rounded-xl loading-skeleton"></div>
@@ -248,12 +251,12 @@
         <div class="h-56 rounded-xl loading-skeleton"></div>
       </div>
 
-       
+       <!-- Pagination -->
       <div class="mt-8 flex justify-center">
         <button id="loadMoreBtn" class="hidden px-5 py-3 rounded-lg border border-[var(--color-border)] bg-white hover:bg-gray-100">Load more</button>
       </div>
 
-       
+       <!-- Empty -->
       <div id="no-products" class="hidden text-center py-12">
         <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <h3 class="text-xl font-semibold text-gray-700 mb-2">No watches found</h3>
@@ -263,6 +266,7 @@
     </div>
   </section>
 
+   Why Choose
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
@@ -302,7 +306,7 @@
     </div>
   </section>
 
-   
+   About
   <section id="about" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
@@ -310,9 +314,10 @@
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">Trusted partner in luxury timepieces since 2019—expertise, authenticity, and customer-first service.</p>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-12 items-center mb-12">
+      <div class="grid lg:grid-cols-2 gap-12 mb-12">
         <div class="relative">
-          <img src="hel.webp" alt="Helix Watch Store" class="w-full h-auto rounded-2xl"/>
+           <!-- fix placeholder 404 by using local image -->
+          <img src="/placeholder.jpg" alt="Helix Watch Store" class="w-full h-auto rounded-2xl"/>
           <div class="watermark" aria-hidden="true">
             <img src="hel.webp" alt="" onerror="this.style.display='none'"/><span class="text-xs font-semibold">HELIX</span>
           </div>
@@ -340,11 +345,43 @@
           <div class="flex gap-3 flex-wrap">
             <a href="https://wa.me/919833724525?text=Hi%20Muzakkir%2C%20I'd%20like%20a%20consultation%20for%20watch%20selection" class="px-6 py-3 rounded-lg bg-green-600 text-white hover:bg-green-700">Schedule Consultation</a>
             <a href="https://instagram.com/helix.in_" class="px-6 py-3 rounded-lg border-2 border-black text-black hover:bg-black hover:text-white">View Our Gallery</a>
+             <!-- Add Warranty Checker and Track Order quick actions -->
+            <button id="openWarranty" class="px-6 py-3 rounded-lg border-2 border-black text-black hover:bg-black hover:text-white">Warranty Checker</button>
+            <button id="openTrackOrder" class="px-6 py-3 rounded-lg border-2 border-black text-black hover:bg-black hover:text-white">Track Order</button>
+          </div>
+
+           <!-- Add five new working About features ("Our Promises") -->
+          <div class="mt-8 grid md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-xl p-5 border border-[var(--color-border)]">
+              <h4 class="font-semibold mb-1">Price Match Promise</h4>
+              <p class="text-sm text-gray-600 mb-3">Found a better price? We’ll try to match it.</p>
+              <a href="https://wa.me/919833724525?text=Hi%20Muzakkir%2C%20I%27d%20like%20to%20request%20a%20price%20match." class="px-3 py-2 rounded-lg border hover:bg-gray-50 inline-block text-sm">Request Match</a>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-[var(--color-border)]">
+              <h4 class="font-semibold mb-1">Service & Repairs</h4>
+              <p class="text-sm text-gray-600 mb-3">Battery, polishing, and part replacements.</p>
+              <a href="https://wa.me/919833724525?text=Hi%20Muzakkir%2C%20I%20need%20watch%20service%20%2F%20repair." class="px-3 py-2 rounded-lg border hover:bg-gray-50 inline-block text-sm">Book Service</a>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-[var(--color-border)]">
+              <h4 class="font-semibold mb-1">Authenticity Certificate</h4>
+              <p class="text-sm text-gray-600 mb-3">Every purchase comes with proof of authenticity.</p>
+              <button class="px-3 py-2 rounded-lg border hover:bg-gray-50 text-sm" onclick="openTextModal('Authenticity Certificate', 'All Helix watches include authenticity documentation and applicable warranty details.')">View Sample</button>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-[var(--color-border)] md:col-span-2">
+              <h4 class="font-semibold mb-1">Priority Support</h4>
+              <p class="text-sm text-gray-600 mb-3">Dedicated WhatsApp support for VIP customers.</p>
+              <a href="https://wa.me/919833724525?text=Hi%20Muzakkir%2C%20please%20add%20me%20to%20the%20VIP%20customer%20list." class="px-3 py-2 rounded-lg border hover:bg-gray-50 inline-block text-sm">Get VIP Access</a>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-[var(--color-border)]">
+              <h4 class="font-semibold mb-1">Easy Upgrades</h4>
+              <p class="text-sm text-gray-600 mb-3">Trade-in options for select models.</p>
+              <a href="https://wa.me/919833724525?text=Hi%20Muzakkir%2C%20tell%20me%20more%20about%20trade-in%20options." class="px-3 py-2 rounded-lg border hover:bg-gray-50 inline-block text-sm">Ask for Trade‑in</a>
+            </div>
           </div>
         </div>
       </div>
 
-       
+       <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="text-center bg-white rounded-xl p-6 border border-[var(--color-border)]">
           <div class="w-12 h-12 mx-auto rounded-full bg-blue-100 mb-3"></div>
@@ -372,7 +409,7 @@
         </div>
       </div>
 
-       
+       <!-- Testimonials -->
       <div class="mt-12 bg-white border border-[var(--color-border)] rounded-2xl p-6">
         <h3 class="font-display text-2xl font-bold mb-4 text-center">What Customers Say</h3>
         <div id="testimonials" class="grid md:grid-cols-3 gap-4">
@@ -393,6 +430,7 @@
     </div>
   </section>
 
+   Virtual Try-On
   <section id="virtual-try" class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
@@ -432,16 +470,18 @@
             </div>
           </div>
         </div>
+         <!-- show an image poster by default (not just text) -->
         <div id="virtualTryOnContainer" class="relative bg-black rounded-2xl aspect-video overflow-hidden flex items-center justify-center" aria-label="Virtual try-on preview">
-          <div class="text-center">
-            <svg class="w-16 h-16 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            <p class="text-gray-400">Click “Start” to begin the virtual try-on</p>
+          <img src="/placeholder.jpg" alt="Try-on preview" class="absolute inset-0 w-full h-full object-cover opacity-70"/>
+          <div class="relative z-10 text-center">
+            <p class="text-gray-300">Click “Start” to begin the virtual try-on</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+   Compare Watches
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
@@ -522,7 +562,7 @@
     </div>
   </section>
 
-   
+   FAQ
   <section id="faq" class="py-16 bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">FAQs</h2>
@@ -552,7 +592,7 @@
     </div>
   </section>
 
-   
+   Contact
   <section id="contact" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
       <div class="bg-gray-50 rounded-2xl p-8">
@@ -592,7 +632,7 @@
       </div>
       <div>
         <div class="bg-gray-100 rounded-2xl overflow-hidden h-96 lg:h-full min-h-[400px]">
-           Keyless embed (removes exposed API key)
+           <!-- Keyless embed (removes exposed API key) -->
           <iframe
             src="https://www.google.com/maps?q=SEED+SAGIR+COMPLEX+DEVRIPADA+KAUSA+MUMBRA+THANE+400612&output=embed&z=16"
             width="100%" height="100%" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
@@ -609,7 +649,18 @@
     </div>
   </section>
 
+   <!-- Recently Viewed section (attention-grabbing feature) -->
+  <section id="recent" class="py-16 bg-white hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="font-display text-3xl md:text-4xl font-bold">Recently Viewed</h2>
+        <p class="text-gray-600">Quickly revisit the watches you checked.</p>
+      </div>
+      <div id="recent-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+    </div>
+  </section>
 
+   VIP Club (lead capture) before footer
   <section class="py-16 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">Join the HELIX VIP Club</h2>
@@ -624,7 +675,7 @@
     </div>
   </section>
 
-   
+   Footer
   <footer class="bg-gray-900 text-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
       <div class="md:col-span-2">
@@ -665,11 +716,13 @@
     </div>
   </footer>
 
+   Floating WhatsApp
   <a href="https://wa.me/919833724525?text=Hi%20Muzakkir%2C%20I%27m%20interested%20in%20your%20watch%20collection" target="_blank" aria-label="Chat on WhatsApp"
      class="fixed bottom-6 right-6 z-40 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600">
     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
   </a>
 
+   Cookie Consent
   <div id="cookieConsent" class="cc-banner hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center gap-3">
       <p class="text-sm text-gray-200">We use cookies to enhance your experience and analyze site performance. By clicking “Accept,” you consent to our use of cookies.</p>
@@ -680,10 +733,10 @@
     </div>
   </div>
 
-  
+   Simple Modals
   <div id="modalRoot"></div>
 
-   
+   Scripts
   <script type="module">
     // Firebase SDK (kept; falls back to demo data if unavailable)
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -744,6 +797,8 @@
       vipForm: document.getElementById('vipForm'),
       vipEmail: document.getElementById('vipEmail'),
       openPrivacyVip: document.getElementById('openPrivacyVip'),
+      openWarranty: document.getElementById('openWarranty'),
+      openTrackOrder: document.getElementById('openTrackOrder'),
     };
 
     // Debounce
@@ -766,8 +821,10 @@
         const target = document.querySelector(id);
         if (!target) return;
         e.preventDefault();
-        const topBarOffset = 10 + 64; // topbar + navbar heights
-        const y = target.getBoundingClientRect().top + window.scrollY - topBarOffset;
+        const headerEl = document.querySelector('header');
+        const isFixed = headerEl && getComputedStyle(headerEl).position === 'fixed';
+        const fixedOffset = isFixed ? (10 + 64) : 0;
+        const y = target.getBoundingClientRect().top + window.scrollY - fixedOffset;
         window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
         el.mobileMenu.classList.add('hidden');
       });
@@ -804,7 +861,6 @@
           const snap = await getDocs(qRef);
           allProducts = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         } else {
-          // Fallback demo data for smooth UX when Firebase unavailable
           allProducts = Array.from({length: 16}).map((_,i)=>({
             id: 'demo-'+i,
             name: ['Helix Classic','Helix Sport','Helix Luxe'][i%3] + ' ' + (100+i),
@@ -812,7 +868,7 @@
             model: 'HX-' + (1000+i),
             price: [14999, 18999, 25999, 34999][i%4],
             collection: ['Classic','Sports','Luxury'][i%3],
-            images: ['/placeholder.svg?height=420&width=420'+(i+1)],
+            images: ['/placeholder.jpg'],
             movementType: ['Automatic','Quartz','Automatic'][i%3],
             caseMaterial: ['Steel','Titanium','Steel'][i%3],
             caseSize: [40, 42, 44][i%3],
@@ -893,7 +949,7 @@
     function renderProducts(products, compact) {
       const card = (p) => {
         const badge = getBadgeClass(p.collection);
-        const img = p.images && p.images.length ? p.images[0] : '/placeholder.svg?height=400&width=400';
+        const img = p.images && p.images.length ? p.images[0] : '/placeholder.jpg';
         const price = parseInt(p.price||0).toLocaleString('en-IN');
         const densityImgClass = compact ? 'h-40' : 'h-56';
         const nameSize = compact ? 'text-base' : 'text-lg';
@@ -910,7 +966,7 @@
             ${p.status==='featured' ? `<div class="absolute top-2 right-2"><span class="badge bg-red-100 text-red-800">Featured</span></div>`:''}
             <div class="watermark"><img src="hel.webp" alt="" onerror="this.style.display='none'"/><span class="text-[10px] font-semibold">HELIX</span></div>
             <div class="absolute inset-x-2 bottom-2 opacity-0 group-hover:opacity-100 transition">
-              <div class="grid grid-cols-4 gap-2">
+              <div class="grid grid-cols-5 gap-2">
                 <button onclick="quickView('${id}')" class="col-span-2 px-2 py-2 rounded-lg bg-white/95 text-black hover:bg-white text-sm font-semibold">Quick View</button>
                 <button onclick="addToWishlist('${id}')" class="px-3 py-2 rounded-lg bg-white/95 hover:bg-white" title="Add to wishlist" aria-label="Add to wishlist">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636 10.682 6.318a4.5 4.5 0 00-6.364 0z"/></svg>
@@ -918,6 +974,8 @@
                 <button onclick="toggleCompare('${id}')" class="px-3 py-2 rounded-lg bg-white/95 hover:bg-white" title="Add to compare" aria-label="Add to compare">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M3 4h8v16H3zM13 9h8v11h-8z"/></svg>
                 </button>
+                 <!-- Price Drop Alert toggle -->
+                <button onclick="togglePriceAlert('${id}')" class="px-2 py-2 rounded-lg bg-white/95 hover:bg-white text-xs font-semibold">Price Alert</button>
               </div>
             </div>
           </div>
@@ -988,7 +1046,7 @@
     window.quickView = function(productId) {
       const p = allProducts.find(x=>x.id===productId);
       if (!p) return;
-      const imgs = (p.images && p.images.length ? p.images : ['/placeholder.svg?height=400&width=600']);
+      const imgs = (p.images && p.images.length ? p.images : ['/placeholder.jpg']);
       const price = parseInt(p.price||0).toLocaleString('en-IN');
       const modal = document.createElement('div');
       modal.className = 'fixed inset-0 z-50 bg-black/50 p-4 flex items-center justify-center';
@@ -996,7 +1054,7 @@
         <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden" role="dialog" aria-label="Quick view ${p.name||''}">
           <div class="relative">
             <img id="qvMain" src="${imgs[0]}" alt="${p.name||''}" class="w-full h-64 object-contain bg-gray-50"/>
-            <div class="watermark" aria-hidden="true" style="bottom:.5rem; left:.5rem;">
+            <div class="watermark" aria-hidden="true">
               <img src="hel.webp" alt="" onerror="this.style.display='none'"/><span class="text-[10px] font-semibold">HELIX</span>
             </div>
             <button class="absolute top-3 right-3 bg-white rounded-full p-2 border hover:bg-gray-50" aria-label="Close" onclick="this.closest('.fixed').remove()">
@@ -1012,12 +1070,14 @@
             <div class="price-chip inline-block mb-4">₹${price}</div>
             <p class="text-gray-600 mb-5">${p.description || 'Premium timepiece with exceptional craftsmanship.'}</p>
             <div class="flex gap-2">
-              <a href="https://wa.me/919833724525?text=${encodeURIComponent(`Hi Muzakkir, I'm interested in ${p.name||'this watch'}. Could we discuss availability and price?`)}" class="flex-1 px-4 py-3 rounded-lg bg-black text-white hover:bg-gray-800 text-center">Contact</a>
+              <a href="https://wa.me/919833724525?text=${encodeURIComponent(`Hi Muzakkir, I'm interested in the ${p.name||'watch'}. Could we discuss availability and price?`)}" class="flex-1 px-4 py-3 rounded-lg bg-black text-white hover:bg-gray-800 text-center">Contact</a>
               <button class="px-4 py-3 rounded-lg border hover:bg-gray-50" onclick="document.querySelector('#virtual-try').scrollIntoView({behavior:'smooth'}); setTimeout(()=>{ startVirtualTryOnForProduct('${p.id}', true); }, 700);">Try On</button>
             </div>
           </div>
         </div>`;
       document.body.appendChild(modal);
+      markRecent(productId);
+      renderRecent();
     };
 
     // Wishlist
@@ -1047,7 +1107,7 @@
           </div>
           <div class="p-4 grid sm:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto">
             ${items.map(p=>{
-              const img = p.images?.[0] || '/placeholder.svg?height=160&width=160';
+              const img = p.images?.[0] || '/placeholder.jpg';
               const price = parseInt(p.price||0).toLocaleString('en-IN');
               return `
               <div class="p-3 rounded-xl border bg-gray-50">
@@ -1105,7 +1165,7 @@
       const listEl = modal.querySelector('#cmpList');
       const renderList = (items) => {
         listEl.innerHTML = items.map(p=>{
-          const img = p.images?.[0] || '/placeholder.svg?height=160&width=160';
+          const img = p.images?.[0] || '/placeholder.jpg';
           const price = parseInt(p.price||0).toLocaleString('en-IN');
           return `
             <button class="text-left bg-gray-50 rounded-xl p-3 border hover:border-black" data-id="${p.id}">
@@ -1120,7 +1180,7 @@
             </button>`;
         }).join('');
         listEl.querySelectorAll('[data-id]').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
+          btn.addEventListener('click',()=>{
             const id = btn.getAttribute('data-id');
             const prod = allProducts.find(x=>x.id===id);
             compare[slot] = prod || null;
@@ -1155,7 +1215,7 @@
         } else {
           empty.classList.add('hidden');
           filled.classList.remove('hidden');
-          const img = p.images?.[0] || '/placeholder.svg?height=160&width=160';
+          const img = p.images?.[0] || '/placeholder.jpg';
           const price = parseInt(p.price||0).toLocaleString('en-IN');
           filled.querySelector('[data-img]').src = img;
           filled.querySelector('[data-name]').textContent = p.name||'';
@@ -1165,24 +1225,19 @@
           filled.querySelector('[data-case]').textContent = p.caseMaterial||'Steel';
           filled.querySelector('[data-size]').textContent = (p.caseSize||'42') + 'mm';
           filled.querySelector('[data-water]').textContent = (p.waterResistance||'50') + 'm';
+
+          const mediaRow = filled.querySelector('div.flex.items-center.gap-4');
+          if (mediaRow && !mediaRow.querySelector('.watermark')) {
+            mediaRow.style.position = 'relative';
+            const wm = document.createElement('div');
+            wm.className = 'watermark';
+            wm.innerHTML = `<img src="hel.webp" alt="" onerror="this.style.display='none'"/><span class="text-[10px] font-semibold">HELIX</span>`;
+            mediaRow.appendChild(wm);
+          }
         }
       });
       highlightDiffs();
       updateBadges();
-    }
-    function highlightDiffs() {
-      const A = compare.A, B = compare.B;
-      const map = { A: document.getElementById('compareSlotA'), B: document.getElementById('compareSlotB') };
-      const keys = ['movement','case','size','water'];
-      keys.forEach(k=>{
-        const a = map.A.querySelector(`[data-${k}]`);
-        const b = map.B.querySelector(`[data-${k}]`);
-        [a,b].forEach(el => { if (el) el.parentElement.classList.remove('bg-yellow-50'); });
-        if (A && B && a && b && a.textContent !== b.textContent) {
-          a.parentElement.classList.add('bg-yellow-50');
-          b.parentElement.classList.add('bg-yellow-50');
-        }
-      });
     }
     document.querySelectorAll('[data-action="choose"]').forEach(btn=>{
       btn.addEventListener('click', ()=> openChooseModal(btn.getAttribute('data-slot')));
@@ -1244,6 +1299,8 @@
       ].join('\n');
       const message = `Hi Muzakkir,\n\nI'm interested in:\n${p.name||'Premium Watch'}\n\n${specs}\n\nCould you share availability, warranty, payment options, and best price?`;
       window.open('https://wa.me/919833724525?text=' + encodeURIComponent(message), '_blank');
+      markRecent(productId);
+      renderRecent();
     };
 
     // Virtual Try-On (camera + draggable / scalable overlay + capture)
@@ -1282,18 +1339,10 @@
       try { mediaStream?.getTracks().forEach(t=>t.stop()); } catch {}
       mediaStream = null;
       videoEl = null;
-      el.tryOnContainer.innerHTML = `
-        <div class="text-center">
-          <svg class="w-16 h-16 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-          <p class="text-gray-400">Click “Start” to begin the virtual try-on</p>
-        </div>`;
-    }
-    function applyMirror() {
-      if (!videoEl) return;
-      videoEl.style.transform = el.mirrorVideo.checked ? 'scaleX(-1)' : 'none';
+      showIdleTryOnPoster();
     }
     function createOverlay(src) {
-      const source = src || (el.tryOnImageSelect.value !== 'default' ? el.tryOnImageSelect.value : '/placeholder.svg?height=220&width=220');
+      const source = src || (el.tryOnImageSelect.value !== 'default' ? el.tryOnImageSelect.value : '/placeholder.jpg');
       overlayEl = document.createElement('img');
       overlayEl.src = source;
       overlayEl.alt = 'Watch overlay';
@@ -1346,7 +1395,7 @@
     el.mirrorVideo.addEventListener('change', applyMirror);
     el.tryOnImageSelect.addEventListener('change', ()=>{
       if (!overlayEl) return;
-      overlayEl.src = el.tryOnImageSelect.value === 'default' ? '/placeholder.svg?height=220&width=220' : el.tryOnImageSelect.value;
+      overlayEl.src = el.tryOnImageSelect.value === 'default' ? '/placeholder.jpg' : el.tryOnImageSelect.value;
     });
     el.startTry.addEventListener('click', startCamera);
     el.stopTry.addEventListener('click', stopCamera);
@@ -1357,7 +1406,7 @@
     });
 
     // Capture photo
-    el.captureTryOn.addEventListener('click', ()=>{
+    el.captureTryOn.addEventListener('click',()=>{
       if (!videoEl) return toast('Start the camera first');
       const rect = el.tryOnContainer.getBoundingClientRect();
       const canvas = document.createElement('canvas');
@@ -1514,7 +1563,6 @@
         toast('You are already subscribed');
       }
     });
-
     // Website stats (Firebase optional)
     async function loadWebsiteStats() {
       try {
@@ -1533,10 +1581,132 @@
       }
     }
 
-    // Init
+    // add idle try-on poster + overlay on first load
+    function showIdleTryOnPoster() {
+      const firstImg = (allProducts[0]?.images?.[0]) || '/placeholder.jpg';
+      el.tryOnContainer.innerHTML = `
+        <img src="/placeholder.jpg" alt="" class="absolute inset-0 w-full h-full object-cover"/>
+      `;
+      overlayEl = null; videoEl = null;
+      createOverlay(firstImg);
+      // Keep select in sync with the default
+      if (el.tryOnImageSelect && firstImg) {
+        const pre = Array.from(el.tryOnImageSelect.options).find(o => o.value === firstImg);
+        if (!pre) {
+          const opt = document.createElement('option');
+          opt.value = firstImg; opt.textContent = 'Default Watch'; opt.selected = true;
+          el.tryOnImageSelect.insertBefore(opt, el.tryOnImageSelect.options[1] || null);
+        } else {
+          el.tryOnImageSelect.value = firstImg;
+        }
+      }
+    }
+
+    function getRecent() { try { return JSON.parse(localStorage.getItem('helix-recent')||'[]'); } catch { return []; } }
+    function setRecent(list) { localStorage.setItem('helix-recent', JSON.stringify(list.slice(0, 12))); }
+    function markRecent(productId) {
+      if (!productId) return;
+      const list = getRecent().filter(id => id !== productId);
+      list.unshift(productId);
+      setRecent(list);
+    }
+    function renderRecent() {
+      const sec = document.getElementById('recent');
+      const grid = document.getElementById('recent-grid');
+      if (!sec || !grid) return;
+      const ids = getRecent();
+      const items = ids.map(id => allProducts.find(p=>p.id===id)).filter(Boolean);
+      if (items.length === 0) { sec.classList.add('hidden'); return; }
+      sec.classList.remove('hidden');
+      grid.innerHTML = items.slice(0, 8).map(p => {
+        const img = p.images?.[0] || '/placeholder.jpg';
+        const price = parseInt(p.price||0).toLocaleString('en-IN');
+        return `
+          <button class="group bg-white border border-[var(--color-border)] rounded-xl overflow-hidden hover:shadow-lg transition text-left" onclick="quickView('${p.id}')">
+            <div class="relative bg-gray-50 h-40 flex items-center justify-center">
+              <img src="${img}" alt="${p.name||''}" class="max-w-full max-h-full object-contain"/>
+              <div class="watermark"><img src="hel.webp" alt="" onerror="this.style.display='none'"/><span class="text-[10px] font-semibold">HELIX</span></div>
+            </div>
+            <div class="p-3">
+              <div class="font-semibold line-clamp-1">${p.name||''}</div>
+              <div class="text-sm text-gray-500 line-clamp-1">${p.brand||''} ${p.model||''}</div>
+              <div class="mt-1 text-sm font-semibold">₹${price}</div>
+            </div>
+          </button>`;
+      }).join('');
+    }
+
+    function getAlerts() { try { return JSON.parse(localStorage.getItem('helix-alerts')||'[]'); } catch { return []; } }
+    function setAlerts(list) { localStorage.setItem('helix-alerts', JSON.stringify(list)); }
+    window.togglePriceAlert = function(productId) {
+      let alerts = getAlerts();
+      if (alerts.includes(productId)) {
+        alerts = alerts.filter(id => id !== productId);
+        toast('Removed price alert');
+      } else {
+        alerts.push(productId);
+        toast('Price alert set');
+      }
+      setAlerts(alerts);
+    }
+
+    function openWarrantyModal() {
+      const m = document.createElement('div');
+      m.className = 'fixed inset-0 z-50 bg-black/50 p-4 flex items-center justify-center';
+      m.innerHTML = `
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden">
+          <div class="p-4 border-b flex items-center justify-between">
+            <h3 class="font-semibold">Warranty Checker</h3>
+            <button class="px-3 py-2 rounded-lg border hover:bg-gray-50" onclick="this.closest('.fixed').remove()">Close</button>
+          </div>
+          <form id="wForm" class="p-5 space-y-3">
+            <label class="block text-sm">Model / Serial</label>
+            <input id="wInput" class="w-full px-3 py-2 rounded-lg border" placeholder="Enter model or serial"/>
+            <button class="mt-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800">Check</button>
+            <div id="wResult" class="mt-2 text-sm text-gray-700"></div>
+          </form>
+        </div>`;
+      document.body.appendChild(m);
+      m.querySelector('#wForm').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const val = (m.querySelector('#wInput').value||'').trim();
+        m.querySelector('#wResult').textContent = val ? 'Warranty: 24 months remaining (example result).' : 'Please enter a valid value.';
+      });
+    }
+    function openTrackOrderModal() {
+      const m = document.createElement('div');
+      m.className = 'fixed inset-0 z-50 bg-black/50 p-4 flex items-center justify-center';
+      m.innerHTML = `
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden">
+          <div class="p-4 border-b flex items-center justify-between">
+            <h3 class="font-semibold">Track Order</h3>
+            <button class="px-3 py-2 rounded-lg border hover:bg-gray-50" onclick="this.closest('.fixed').remove()">Close</button>
+          </div>
+          <form id="tForm" class="p-5 space-y-3">
+            <label class="block text-sm">Order ID</label>
+            <input id="tInput" class="w-full px-3 py-2 rounded-lg border" placeholder="Enter order ID"/>
+            <button class="mt-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800">Check</button>
+            <div id="tResult" class="mt-2 text-sm text-gray-700"></div>
+          </form>
+        </div>`;
+      document.body.appendChild(m);
+      m.querySelector('#tForm').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const val = (m.querySelector('#tInput').value||'').trim();
+        m.querySelector('#tResult').textContent = val ? 'Status: Ready for pickup (example status).' : 'Please enter a valid order ID.';
+      });
+    }
+    el.openWarranty?.addEventListener('click', openWarrantyModal);
+    el.openTrackOrder?.addEventListener('click', openTrackOrderModal);
+
     window.addEventListener('load', () => {
       initCookies();
-      loadProducts().then(()=>{ updateCompareFromLocal(); updateBadges(); });
+      loadProducts().then(()=>{
+        updateCompareFromLocal();
+        updateBadges();
+        showIdleTryOnPoster();
+        renderRecent();
+      });
       loadWebsiteStats();
     });
   </script>
