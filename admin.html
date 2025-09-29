@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-     Firebase SDK 
+     
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -46,22 +46,27 @@
     </script>
 
     <style>
+        /* New, tighter professional palette and typographic rhythm.
+           Colors: primary (sky), accent (teal), support (amber), neutrals (ink/white) */
+
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --dark: #1e1b4b;
-            --darker: #0f0c29;
+          --ink: #0b1220;
+          --ink-2: #101826;
+          --primary: #0ea5e9;       /* sky-500 */
+          --primary-dark: #0284c7;  /* sky-600 */
+          --accent: #14b8a6;        /* teal-500 */
+          --support: #f59e0b;       /* amber-500 (used for badges/accents) */
+          --success: #10b981;       /* emerald-500 */
+          --error: #ef4444;         /* red-500 */
         }
         
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--primary-dark) 100%);
+            background: radial-gradient(1200px 800px at 20% 0%, rgba(20,184,166,0.15), transparent 60%),
+                        radial-gradient(1000px 700px at 80% 10%, rgba(14,165,233,0.15), transparent 60%),
+                        linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
             min-height: 100vh;
+            color: #fff;
         }
         
         .font-futuristic {
@@ -69,66 +74,63 @@
         }
         
         .glass-morphism {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
         }
         
         .neon-glow {
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 0 30px rgba(14,165,233,0.35);
         }
         
         .hover-lift {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .hover-lift:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
         }
         
         .gradient-text {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+            background: linear-gradient(120deg, var(--primary), var(--accent), var(--support));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
         .futuristic-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             color: white;
         }
         
         .futuristic-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
-            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 6px rgba(14,165,233,0.15);
             outline: none;
         }
         
         .futuristic-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border: none;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             color: white;
             font-weight: 600;
         }
         
         .futuristic-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(14,165,233,0.35);
         }
         
         .futuristic-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+            opacity: 0.65; cursor: not-allowed; transform: none;
         }
         
         .futuristic-btn::before {
@@ -138,7 +140,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
             transition: left 0.5s;
         }
         
@@ -147,9 +149,9 @@
         }
         
         .stats-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
         }
@@ -157,205 +159,199 @@
         .stats-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            inset: 0 0 auto 0;
             height: 4px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
         }
         
         .product-card-admin {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
         }
         
         .product-card-admin:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.10);
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.35);
         }
         
         .loading-spinner {
             border: 4px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
+            border-radius: 9999px;
             border-top: 4px solid var(--primary);
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             animation: spin 1s linear infinite;
         }
         
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
         
-        .pulse-animation {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .7; }
-        }
-
         .success-notification {
             background: linear-gradient(135deg, var(--success), #059669);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 0.875rem 1.25rem;
             border-radius: 0.75rem;
             position: fixed;
             top: 2rem;
             right: 2rem;
             z-index: 1000;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 10px 25px rgba(16,185,129,0.3);
+            animation: slideIn 0.25s ease-out;
         }
 
         .error-notification {
             background: linear-gradient(135deg, var(--error), #dc2626);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 0.875rem 1.25rem;
             border-radius: 0.75rem;
             position: fixed;
             top: 2rem;
             right: 2rem;
             z-index: 1000;
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 10px 25px rgba(239,68,68,0.3);
+            animation: slideIn 0.25s ease-out;
         }
 
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        /* Image lightbox modal */
+        .modal-backdrop {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+          display: none; align-items: center; justify-content: center;
+          z-index: 1000;
+        }
+        .modal-backdrop.show { display: flex; }
     </style>
 </head>
-<body class="antialiased text-white">
-     Futuristic Header 
+<body class="antialiased">
+     
     <header class="glass-morphism sticky top-0 z-50 border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 flex items-center justify-center shadow-lg">
-                        <span class="font-futuristic text-2xl font-bold">H</span>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-r from-sky-500 via-teal-500 to-amber-500 flex items-center justify-center shadow-lg">
+                        <span class="font-futuristic text-xl sm:text-2xl font-bold">H</span>
                     </div>
                     <div>
-                        <h1 class="font-futuristic text-3xl font-bold gradient-text">HELIX ADMIN</h1>
-                        <p class="text-white/70 text-sm">Advanced Management System</p>
+                        <h1 class="font-futuristic text-2xl sm:text-3xl font-bold gradient-text text-balance">HELIX ADMIN</h1>
+                        <p class="text-white/70 text-xs sm:text-sm">Advanced Management System</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <div class="text-right">
-                        <p class="text-white/90 font-semibold text-lg">Welcome, Muzakkir</p>
-                        <p class="text-white/60 text-sm">System Administrator</p>
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <div class="hidden sm:block text-right">
+                        <p class="text-white/90 font-semibold text-sm sm:text-base">Welcome, Muzakkir</p>
+                        <p class="text-white/60 text-xs">System Administrator</p>
                     </div>
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center shadow-lg">
-                        <span class="text-lg font-bold">M</span>
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-r from-emerald-400 to-sky-500 flex items-center justify-center shadow-lg">
+                        <span class="text-sm sm:text-base font-bold">M</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="max-w-7xl mx-auto px-6 py-8">
-         Enhanced Stats Dashboard 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-            <div class="stats-card rounded-2xl p-6 hover-lift">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
+            <div class="stats-card rounded-2xl p-5 sm:p-6 hover-lift">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-bold font-futuristic gradient-text" id="totalProducts">0</p>
-                        <p class="text-white/70 text-sm font-medium">Total Products</p>
+                        <p class="text-2xl sm:text-3xl font-bold font-futuristic gradient-text" id="totalProducts">0</p>
+                        <p class="text-white/70 text-xs sm:text-sm font-medium">Total Products</p>
                     </div>
                 </div>
-                <div class="w-full bg-white/20 rounded-full h-3">
-                    <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-1000" style="width: 75%"></div>
+                <div class="w-full bg-white/20 rounded-full h-2.5 sm:h-3">
+                    <div class="bg-gradient-to-r from-sky-500 to-teal-500 h-2.5 sm:h-3 rounded-full transition-all duration-1000" style="width: 75%"></div>
                 </div>
             </div>
             
-            <div class="stats-card rounded-2xl p-6 hover-lift">
+            <div class="stats-card rounded-2xl p-5 sm:p-6 hover-lift">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-bold font-futuristic gradient-text" id="activeProducts">0</p>
-                        <p class="text-white/70 text-sm font-medium">Active Products</p>
+                        <p class="text-2xl sm:text-3xl font-bold font-futuristic gradient-text" id="activeProducts">0</p>
+                        <p class="text-white/70 text-xs sm:text-sm font-medium">Active Products</p>
                     </div>
                 </div>
-                <div class="w-full bg-white/20 rounded-full h-3">
-                    <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-1000" style="width: 90%"></div>
+                <div class="w-full bg-white/20 rounded-full h-2.5 sm:h-3">
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-2.5 sm:h-3 rounded-full transition-all duration-1000" style="width: 90%"></div>
                 </div>
             </div>
             
-            <div class="stats-card rounded-2xl p-6 hover-lift">
+            <div class="stats-card rounded-2xl p-5 sm:p-6 hover-lift">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-r from-sky-600 to-teal-600 flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                         </svg>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-bold font-futuristic gradient-text" id="totalCollections">3</p>
-                        <p class="text-white/70 text-sm font-medium">Collections</p>
+                        <p class="text-2xl sm:text-3xl font-bold font-futuristic gradient-text" id="totalCollections">3</p>
+                        <p class="text-white/70 text-xs sm:text-sm font-medium">Collections</p>
                     </div>
                 </div>
-                <div class="w-full bg-white/20 rounded-full h-3">
-                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-1000" style="width: 60%"></div>
+                <div class="w-full bg-white/20 rounded-full h-2.5 sm:h-3">
+                    <div class="bg-gradient-to-r from-sky-600 to-teal-600 h-2.5 sm:h-3 rounded-full transition-all duration-1000" style="width: 60%"></div>
                 </div>
             </div>
             
-            <div class="stats-card rounded-2xl p-6 hover-lift">
+            <div class="stats-card rounded-2xl p-5 sm:p-6 hover-lift">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 flex items-center justify-center shadow-lg">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-bold font-futuristic gradient-text" id="totalRevenue">₹0</p>
-                        <p class="text-white/70 text-sm font-medium">Total Value</p>
+                        <p class="text-2xl sm:text-3xl font-bold font-futuristic gradient-text" id="totalRevenue">₹0</p>
+                        <p class="text-white/70 text-xs sm:text-sm font-medium">Total Value</p>
                     </div>
                 </div>
-                <div class="w-full bg-white/20 rounded-full h-3">
-                    <div class="bg-gradient-to-r from-orange-500 to-red-500 h-3 rounded-full transition-all duration-1000" style="width: 85%"></div>
+                <div class="w-full bg-white/20 rounded-full h-2.5 sm:h-3">
+                    <div class="bg-gradient-to-r from-amber-500 to-amber-600 h-2.5 sm:h-3 rounded-full transition-all duration-1000" style="width: 85%"></div>
                 </div>
             </div>
         </div>
 
-         Add Product Section 
-        <div class="glass-morphism rounded-3xl p-8 mb-10 neon-glow">
-            <div class="flex items-center justify-between mb-8">
+        <div class="glass-morphism rounded-3xl p-6 sm:p-8 mb-8 sm:mb-10 neon-glow">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
                 <div>
-                    <h2 class="font-futuristic text-4xl font-bold gradient-text mb-3">Add New Product</h2>
-                    <p class="text-white/70 text-lg">Create premium timepiece listings with advanced specifications</p>
+                    <h2 class="font-futuristic text-3xl sm:text-4xl font-bold gradient-text mb-2">Add New Product</h2>
+                    <p class="text-white/70 text-sm sm:text-lg">Create premium timepiece listings with advanced specifications</p>
                 </div>
-                <button id="toggleAddForm" class="futuristic-btn text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-lg">
+                <button id="toggleAddForm" class="futuristic-btn text-white px-6 sm:px-10 py-3 sm:py-4 rounded-2xl font-semibold text-base sm:text-lg shadow-lg">
                     <span id="toggleText">+ Add Product</span>
                 </button>
             </div>
             
-            <form id="productForm" class="hidden space-y-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form id="productForm" class="hidden space-y-6 sm:space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Product Name *</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Product Name *</label>
                         <input type="text" id="productName" required 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="e.g., Rolex Submariner">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Collection *</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Collection *</label>
                         <select id="productCollection" required 
-                                class="futuristic-input w-full px-6 py-4 rounded-2xl text-white text-lg">
+                                class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white text-base sm:text-lg">
                             <option value="">Select Collection</option>
                             <option value="Classic">Classic Collection</option>
                             <option value="Sports">Sports Collection</option>
@@ -364,30 +360,30 @@
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Price (₹) *</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Price (₹) *</label>
                         <input type="number" id="productPrice" required min="0" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="25000">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Brand</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Brand</label>
                         <input type="text" id="productBrand" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="e.g., Rolex, Omega, Seiko">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Model</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Model</label>
                         <input type="text" id="productModel" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="e.g., Submariner, Speedmaster">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Movement Type</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Movement Type</label>
                         <select id="productMovement" 
-                                class="futuristic-input w-full px-6 py-4 rounded-2xl text-white text-lg">
+                                class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white text-base sm:text-lg">
                             <option value="">Select Movement</option>
                             <option value="Automatic">Automatic</option>
                             <option value="Quartz">Quartz</option>
@@ -397,9 +393,9 @@
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Case Material</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Case Material</label>
                         <select id="productCaseMaterial" 
-                                class="futuristic-input w-full px-6 py-4 rounded-2xl text-white text-lg">
+                                class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white text-base sm:text-lg">
                             <option value="">Select Material</option>
                             <option value="Stainless Steel">Stainless Steel</option>
                             <option value="Gold">Gold</option>
@@ -411,9 +407,9 @@
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Status</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Status</label>
                         <select id="productStatus" 
-                                class="futuristic-input w-full px-6 py-4 rounded-2xl text-white text-lg">
+                                class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white text-base sm:text-lg">
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                             <option value="sold">Sold</option>
@@ -422,162 +418,243 @@
                 </div>
                 
                 <div>
-                    <label class="block text-white/90 font-semibold mb-3 text-lg">Description</label>
+                    <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Description</label>
                     <textarea id="productDescription" rows="4" 
-                              class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                              class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                               placeholder="Detailed description of the watch..."></textarea>
                 </div>
                 
                 <div>
-                    <label class="block text-white/90 font-semibold mb-3 text-lg">Product Images *</label>
+                    <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Product Images *</label>
                     <input type="file" id="productImages" multiple accept="image/*" 
-                           class="futuristic-input w-full px-6 py-4 rounded-2xl text-white">
-                    <p class="text-white/60 text-sm mt-3">Select multiple images (JPG, PNG, WebP)</p>
-                    <div id="imagePreview" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                           class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white">
+                    <p class="text-white/60 text-sm mt-2 sm:mt-3">Select multiple images (JPG, PNG, WebP)</p>
+                    <div id="imagePreview" class="mt-4 sm:mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"></div>
                 </div>
                 
-                <div class="flex justify-end space-x-6 pt-8">
+                <div class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-6 pt-4 sm:pt-8">
                     <button type="button" id="cancelForm" 
-                            class="px-10 py-4 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 transition-all text-lg font-semibold">
+                            class="px-6 sm:px-10 py-3 sm:py-4 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 transition-all text-base sm:text-lg font-semibold">
                         Cancel
                     </button>
                     <button type="submit" id="submitProduct" 
-                            class="futuristic-btn px-10 py-4 text-white rounded-2xl font-semibold text-lg shadow-lg">
+                            class="futuristic-btn px-6 sm:px-10 py-3 sm:py-4 text-white rounded-2xl font-semibold text-base sm:text-lg shadow-lg">
                         <span id="submitText">Add Product</span>
                     </button>
                 </div>
             </form>
         </div>
 
-         Website Statistics Management 
-        <div class="glass-morphism rounded-3xl p-8 mb-10">
-            <div class="flex items-center justify-between mb-8">
+        <div class="glass-morphism rounded-3xl p-6 sm:p-8 mb-8 sm:mb-10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
                 <div>
-                    <h2 class="font-futuristic text-4xl font-bold gradient-text mb-3">Website Statistics</h2>
-                    <p class="text-white/70 text-lg">Manage your website's dynamic statistics and achievements</p>
+                    <h2 class="font-futuristic text-3xl sm:text-4xl font-bold gradient-text mb-2">Website Statistics</h2>
+                    <p class="text-white/70 text-sm sm:text-lg">Manage your website's dynamic statistics and achievements</p>
                 </div>
-                <button id="toggleStatsForm" class="futuristic-btn text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-lg">
+                <button id="toggleStatsForm" class="futuristic-btn text-white px-6 sm:px-10 py-3 sm:py-4 rounded-2xl font-semibold text-base sm:text-lg shadow-lg">
                     <span id="toggleStatsText">Update Stats</span>
                 </button>
             </div>
             
-            <form id="statsForm" class="hidden space-y-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <form id="statsForm" class="hidden space-y-6 sm:space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Satisfied Customers</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Satisfied Customers</label>
                         <input type="text" id="satisfiedCustomers" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="1000+">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Watches Sold</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Watches Sold</label>
                         <input type="text" id="watchesSold" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="500+">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Authentic Guarantee</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Authentic Guarantee</label>
                         <input type="text" id="authenticGuarantee" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="100%">
                     </div>
                     
                     <div>
-                        <label class="block text-white/90 font-semibold mb-3 text-lg">Years Experience</label>
+                        <label class="block text-white/90 font-semibold mb-2 sm:mb-3 text-base sm:text-lg">Years Experience</label>
                         <input type="text" id="yearsExperience" 
-                               class="futuristic-input w-full px-6 py-4 rounded-2xl text-white placeholder-white/50 text-lg"
+                               class="futuristic-input w-full px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl text-white placeholder-white/50 text-base sm:text-lg"
                                placeholder="6+">
                     </div>
                 </div>
                 
-                <div class="flex justify-end space-x-6 pt-8">
+                <div class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-6 pt-4 sm:pt-8">
                     <button type="button" id="cancelStatsForm" 
-                            class="px-10 py-4 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 transition-all text-lg font-semibold">
+                            class="px-6 sm:px-10 py-3 sm:py-4 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 transition-all text-base sm:text-lg font-semibold">
                         Cancel
                     </button>
                     <button type="submit" id="submitStats" 
-                            class="futuristic-btn px-10 py-4 text-white rounded-2xl font-semibold text-lg shadow-lg">
+                            class="futuristic-btn px-6 sm:px-10 py-3 sm:py-4 text-white rounded-2xl font-semibold text-base sm:text-lg shadow-lg">
                         <span id="submitStatsText">Update Statistics</span>
                     </button>
                 </div>
             </form>
             
-             Current Stats Display 
-            <div id="currentStats" class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-10">
-                <div class="stats-card rounded-2xl p-6 text-center hover-lift">
-                    <div class="text-4xl font-bold font-futuristic gradient-text mb-2" id="currentSatisfiedCustomers">1000+</div>
-                    <div class="text-white/70 font-medium">Satisfied Customers</div>
+            <div id="currentStats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6 sm:mt-10">
+                <div class="stats-card rounded-2xl p-5 sm:p-6 text-center hover-lift">
+                    <div class="text-3xl sm:text-4xl font-bold font-futuristic gradient-text mb-1.5 sm:mb-2" id="currentSatisfiedCustomers">1000+</div>
+                    <div class="text-white/70 font-medium text-sm sm:text-base">Satisfied Customers</div>
                 </div>
-                <div class="stats-card rounded-2xl p-6 text-center hover-lift">
-                    <div class="text-4xl font-bold font-futuristic gradient-text mb-2" id="currentWatchesSold">500+</div>
-                    <div class="text-white/70 font-medium">Watches Sold</div>
+                <div class="stats-card rounded-2xl p-5 sm:p-6 text-center hover-lift">
+                    <div class="text-3xl sm:text-4xl font-bold font-futuristic gradient-text mb-1.5 sm:mb-2" id="currentWatchesSold">500+</div>
+                    <div class="text-white/70 font-medium text-sm sm:text-base">Watches Sold</div>
                 </div>
-                <div class="stats-card rounded-2xl p-6 text-center hover-lift">
-                    <div class="text-4xl font-bold font-futuristic gradient-text mb-2" id="currentAuthenticGuarantee">100%</div>
-                    <div class="text-white/70 font-medium">Authentic Guarantee</div>
+                <div class="stats-card rounded-2xl p-5 sm:p-6 text-center hover-lift">
+                    <div class="text-3xl sm:text-4xl font-bold font-futuristic gradient-text mb-1.5 sm:mb-2" id="currentAuthenticGuarantee">100%</div>
+                    <div class="text-white/70 font-medium text-sm sm:text-base">Authentic Guarantee</div>
                 </div>
-                <div class="stats-card rounded-2xl p-6 text-center hover-lift">
-                    <div class="text-4xl font-bold font-futuristic gradient-text mb-2" id="currentYearsExperience">6+</div>
-                    <div class="text-white/70 font-medium">Years Experience</div>
+                <div class="stats-card rounded-2xl p-5 sm:p-6 text-center hover-lift">
+                    <div class="text-3xl sm:text-4xl font-bold font-futuristic gradient-text mb-1.5 sm:mb-2" id="currentYearsExperience">6+</div>
+                    <div class="text-white/70 font-medium text-sm sm:text-base">Years Experience</div>
                 </div>
             </div>
         </div>
 
-         Products List 
         <div class="glass-morphism rounded-3xl">
-            <div class="p-8 border-b border-white/10">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="font-futuristic text-4xl font-bold gradient-text mb-3">Product Inventory</h2>
-                        <p class="text-white/70 text-lg">Manage your premium watch collection</p>
+            <div class="p-6 sm:p-8 border-b border-white/10">
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <h2 class="font-futuristic text-3xl sm:text-4xl font-bold gradient-text mb-2">Product Inventory</h2>
+                            <p class="text-white/70 text-sm sm:text-lg">Manage your premium watch collection</p>
+                        </div>
+                        <button id="exportCsvBtn" class="hidden sm:inline-flex futuristic-btn px-4 py-2 rounded-xl text-sm font-semibold">
+                          Export CSV
+                        </button>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <select id="filterCollection" 
-                                class="futuristic-input px-6 py-3 rounded-xl text-white">
-                            <option value="">All Collections</option>
-                            <option value="Classic">Classic</option>
-                            <option value="Sports">Sports</option>
-                            <option value="Luxury">Luxury</option>
-                        </select>
-                        <select id="filterStatus" 
-                                class="futuristic-input px-6 py-3 rounded-xl text-white">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="sold">Sold</option>
-                        </select>
+
+                    <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4">
+                        <div class="flex items-center gap-3 w-full lg:w-auto">
+                            <select id="filterCollection" 
+                                    class="futuristic-input flex-1 lg:flex-none px-4 py-2.5 rounded-xl text-sm">
+                                <option value="">All Collections</option>
+                                <option value="Classic">Classic</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Luxury">Luxury</option>
+                            </select>
+                            <select id="filterStatus" 
+                                    class="futuristic-input flex-1 lg:flex-none px-4 py-2.5 rounded-xl text-sm">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-3 w-full">
+                            <div class="relative flex-1">
+                                <input id="searchInput" placeholder="Search by name, brand, or model" 
+                                       class="futuristic-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm">
+                                <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z"/>
+                                </svg>
+                            </div>
+                            <select id="sortBy" class="futuristic-input px-4 py-2.5 rounded-xl text-sm">
+                                <option value="newest">Newest</option>
+                                <option value="priceAsc">Price: Low to High</option>
+                                <option value="priceDesc">Price: High to Low</option>
+                                <option value="nameAsc">Name: A to Z</option>
+                            </select>
+                            <label class="flex items-center gap-2 text-sm text-white/80">
+                                <input id="selectAll" type="checkbox" class="h-4 w-4 rounded border-white/30 bg-transparent">
+                                Select All
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="bulkActions" class="hidden rounded-xl bg-white/5 border border-white/10 px-4 py-3 flex items-center justify-between">
+                        <p class="text-sm text-white/80"><span id="bulkCount">0</span> selected</p>
+                        <div class="flex items-center gap-2">
+                            <button id="bulkActive" class="px-3 py-1.5 rounded-lg bg-emerald-600/80 hover:bg-emerald-600 text-sm font-medium">Mark Active</button>
+                            <button id="bulkInactive" class="px-3 py-1.5 rounded-lg bg-amber-600/80 hover:bg-amber-600 text-sm font-medium">Mark Inactive</button>
+                            <button id="bulkSold" class="px-3 py-1.5 rounded-lg bg-sky-600/80 hover:bg-sky-600 text-sm font-medium">Mark Sold</button>
+                            <button id="bulkDelete" class="px-3 py-1.5 rounded-lg bg-red-600/80 hover:bg-red-600 text-sm font-medium">Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div id="productsContainer" class="p-8">
-                <div id="loadingProducts" class="text-center py-16">
-                    <div class="loading-spinner mx-auto mb-6"></div>
-                    <p class="text-white/70 text-lg">Loading products...</p>
+            <div id="productsContainer" class="p-6 sm:p-8">
+                <div id="loadingProducts" class="text-center py-12 sm:py-16">
+                    <div class="loading-spinner mx-auto mb-5"></div>
+                    <p class="text-white/70 text-base sm:text-lg">Loading products...</p>
                 </div>
-                <div id="noProducts" class="text-center py-16 hidden">
-                    <svg class="w-20 h-20 text-white/40 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div id="noProducts" class="text-center py-12 sm:py-16 hidden">
+                    <svg class="w-16 h-16 sm:w-20 sm:h-20 text-white/40 mx-auto mb-4 sm:mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                     </svg>
-                    <p class="text-white/70 text-lg">No products found</p>
+                    <p class="text-white/70 text-base sm:text-lg">No products found</p>
                 </div>
-                <div id="productsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                <div id="productsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
+
+                <div id="paginationControls" class="hidden mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div class="flex items-center gap-2 text-sm text-white/70">
+                    <span id="paginationInfo">Page 1 of 1</span>
+                    <span aria-hidden="true">•</span>
+                    <label class="flex items-center gap-2">
+                      Per page
+                      <select id="pageSize" class="futuristic-input px-2.5 py-1.5 rounded-lg text-sm">
+                        <option value="6">6</option>
+                        <option value="9">9</option>
+                        <option value="12">12</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button id="prevPage" class="px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10 text-sm">Prev</button>
+                    <div id="pageNumbers" class="flex items-center gap-1.5"></div>
+                    <button id="nextPage" class="px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/10 text-sm">Next</button>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <div id="imageModal" class="modal-backdrop">
+      <div class="relative max-w-4xl w-[92vw]">
+        <button id="closeModal" class="absolute -top-10 right-0 px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 text-sm">Close</button>
+        <div class="glass-morphism rounded-2xl overflow-hidden">
+          <div class="relative">
+            <img id="modalImage" src="/placeholder.svg?height=640&width=1024" alt="Product image preview" class="w-full h-[48vh] sm:h-[64vh] object-contain bg-black/30" />
+            <button id="modalPrev" class="absolute left-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25">‹</button>
+            <button id="modalNext" class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25">›</button>
+          </div>
+          <div class="p-3 text-center text-sm text-white/70">
+            <span id="modalCounter">1 / 1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
+        // State
         let products = [];
         let editingProductId = null;
 
+        let selectedIds = new Set();
+        let searchQuery = '';
+        let sortKey = 'newest';
+        let currentPage = 1;
+        let pageSize = 6;
+        let activeImages = []; // for modal
+        let activeImageIndex = 0;
+
+        // Utilities
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `${type}-notification`;
             notification.innerHTML = `
                 <div class="flex items-center">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         ${type === 'success' 
                             ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
                             : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>'
@@ -590,8 +667,16 @@
             
             setTimeout(() => {
                 notification.remove();
-            }, 4000);
+            }, 3500);
         }
+
+        const debounce = (fn, delay = 250) => {
+          let t;
+          return (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn(...args), delay);
+          };
+        };
 
         // Toggle forms
         document.getElementById('toggleAddForm').addEventListener('click', () => {
@@ -629,12 +714,12 @@
             Array.from(files).forEach(file => {
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
-                    reader.onload = (e) => {
+                    reader.onload = (ev) => {
                         const div = document.createElement('div');
                         div.className = 'relative group';
                         div.innerHTML = `
-                            <img src="${e.target.result}" 
-                                 class="w-full h-32 object-cover rounded-xl border-2 border-white/20 group-hover:border-white/40 transition-all">
+                            <img src="${ev.target.result}" 
+                                 class="w-full h-32 object-cover rounded-xl border-2 border-white/20 group-hover:border-white/40 transition-all" alt="Preview">
                             <div class="absolute inset-0 bg-black/20 rounded-xl opacity-0 group-hover:opacity-100 transition-all"></div>
                         `;
                         preview.appendChild(div);
@@ -644,6 +729,7 @@
             });
         });
 
+        // Product form submit (existing, with robust logs)
         document.getElementById('productForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -656,7 +742,6 @@
 
             try {
                 console.log('[v0] Starting product submission...');
-                
                 const productData = {
                     name: document.getElementById('productName').value.trim(),
                     collection: document.getElementById('productCollection').value,
@@ -667,7 +752,7 @@
                     caseMaterial: document.getElementById('productCaseMaterial').value || '',
                     status: document.getElementById('productStatus').value,
                     description: document.getElementById('productDescription').value.trim() || '',
-                    createdAt: new Date(),
+                    createdAt: editingProductId ? undefined : new Date(),
                     updatedAt: new Date()
                 };
 
@@ -691,10 +776,9 @@
                     }
                 }
 
-                productData.images = imageUrls;
-                submitText.textContent = 'Saving product...';
+                if (imageUrls.length) productData.images = imageUrls;
+                submitText.textContent = editingProductId ? 'Saving changes...' : 'Saving product...';
 
-                // Save to Firestore
                 if (editingProductId) {
                     await window.firebaseModules.updateDoc(window.firebaseModules.doc(window.db, 'products', editingProductId), productData);
                     console.log('[v0] Product updated successfully');
@@ -705,12 +789,11 @@
                     showNotification('Product added successfully!');
                 }
 
-                // Reset form
                 resetForm();
                 document.getElementById('productForm').classList.add('hidden');
                 document.getElementById('toggleText').textContent = '+ Add Product';
 
-                loadProducts();
+                await loadProducts(true); // refresh and keep filters
                 
             } catch (error) {
                 console.error('[v0] Error with product:', error);
@@ -721,6 +804,7 @@
             }
         });
 
+        // Stats submit (existing)
         document.getElementById('statsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -740,16 +824,13 @@
                     updatedAt: new Date()
                 };
 
-                // Save to Firestore
                 await window.firebaseModules.setDoc(window.firebaseModules.doc(window.db, 'websiteStats', 'main'), statsData);
 
-                // Update display
                 document.getElementById('currentSatisfiedCustomers').textContent = statsData.satisfiedCustomers;
                 document.getElementById('currentWatchesSold').textContent = statsData.watchesSold;
                 document.getElementById('currentAuthenticGuarantee').textContent = statsData.authenticGuarantee;
                 document.getElementById('currentYearsExperience').textContent = statsData.yearsExperience;
 
-                // Hide form
                 document.getElementById('statsForm').classList.add('hidden');
                 document.getElementById('toggleStatsText').textContent = 'Update Stats';
 
@@ -764,7 +845,7 @@
             }
         });
 
-        // Cancel buttons
+        // Cancel buttons (existing)
         document.getElementById('cancelForm').addEventListener('click', () => {
             document.getElementById('productForm').classList.add('hidden');
             document.getElementById('toggleText').textContent = '+ Add Product';
@@ -776,21 +857,25 @@
             document.getElementById('toggleStatsText').textContent = 'Update Stats';
         });
 
-        async function loadProducts() {
+        // Loaders
+        async function loadProducts(keepPageAndFilters = false) {
             try {
                 console.log('[v0] Loading products from Firebase...');
                 const querySnapshot = await window.firebaseModules.getDocs(window.firebaseModules.collection(window.db, 'products'));
                 products = [];
-                
-                querySnapshot.forEach((doc) => {
-                    products.push({ id: doc.id, ...doc.data() });
-                });
+                querySnapshot.forEach((d) => products.push({ id: d.id, ...d.data() }));
 
                 console.log('[v0] Loaded', products.length, 'products');
-                displayProducts(products);
-                updateStats();
-                
                 document.getElementById('loadingProducts').classList.add('hidden');
+
+                if (!keepPageAndFilters) {
+                  selectedIds.clear();
+                  currentPage = 1;
+                  document.getElementById('selectAll').checked = false;
+                }
+                updateStats();
+                filterAndRender(); // apply filters, search, sort, and paginate
+                
             } catch (error) {
                 console.error('[v0] Error loading products:', error);
                 document.getElementById('loadingProducts').innerHTML = `
@@ -829,11 +914,110 @@
             }
         }
 
-        function displayProducts(productsToShow) {
+        // Rendering pipeline (search + filters + sort + paginate)
+        function applyFilters(base) {
+          const collectionFilter = document.getElementById('filterCollection').value;
+          const statusFilter = document.getElementById('filterStatus').value;
+          let out = base;
+
+          if (collectionFilter) out = out.filter(p => (p.collection || '') === collectionFilter);
+          if (statusFilter) out = out.filter(p => (p.status || '') === statusFilter);
+
+          const q = searchQuery.trim().toLowerCase();
+          if (q) {
+            out = out.filter(p => {
+              const name = (p.name || '').toLowerCase();
+              const brand = (p.brand || '').toLowerCase();
+              const model = (p.model || '').toLowerCase();
+              return name.includes(q) || brand.includes(q) || model.includes(q);
+            });
+          }
+          return out;
+        }
+
+        function applySort(base) {
+          const arr = [...base];
+          switch (sortKey) {
+            case 'priceAsc':
+              arr.sort((a, b) => (parseInt(a.price) || 0) - (parseInt(b.price) || 0));
+              break;
+            case 'priceDesc':
+              arr.sort((a, b) => (parseInt(b.price) || 0) - (parseInt(a.price) || 0));
+              break;
+            case 'nameAsc':
+              arr.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+              break;
+            case 'newest':
+            default:
+              arr.sort((a, b) => {
+                const aDate = (a.updatedAt || a.createdAt) ? new Date(a.updatedAt || a.createdAt) : new Date(0);
+                const bDate = (b.updatedAt || b.createdAt) ? new Date(b.updatedAt || b.createdAt) : new Date(0);
+                return bDate - aDate;
+              });
+              break;
+          }
+          return arr;
+        }
+
+        function paginate(base) {
+          const total = base.length;
+          const totalPages = Math.max(1, Math.ceil(total / pageSize));
+          currentPage = Math.min(currentPage, totalPages);
+
+          const start = (currentPage - 1) * pageSize;
+          const end = start + pageSize;
+          const slice = base.slice(start, end);
+
+          // update UI
+          const pagination = document.getElementById('paginationControls');
+          const pageInfo = document.getElementById('paginationInfo');
+          const pageNumbers = document.getElementById('pageNumbers');
+          pagination.classList.toggle('hidden', total <= pageSize);
+          pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+          pageNumbers.innerHTML = '';
+
+          for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = `px-3 py-1.5 rounded-lg border text-sm ${i === currentPage ? 'bg-white/20 border-white/15' : 'border-white/15 hover:bg-white/10'}`;
+            btn.addEventListener('click', () => {
+              currentPage = i;
+              renderProducts(slice, base, totalPages);
+            });
+            pageNumbers.appendChild(btn);
+          }
+
+          // prev/next
+          document.getElementById('prevPage').onclick = () => {
+            if (currentPage > 1) {
+              currentPage--;
+              filterAndRender();
+            }
+          };
+          document.getElementById('nextPage').onclick = () => {
+            if (currentPage < totalPages) {
+              currentPage++;
+              filterAndRender();
+            }
+          };
+
+          return { slice, totalPages };
+        }
+
+        function filterAndRender() {
+          const filtered = applyFilters(products);
+          const sorted = applySort(filtered);
+          const { slice } = paginate(sorted);
+          displayProducts(slice, sorted.length);
+          updateBulkBar();
+        }
+
+        // Display products
+        function displayProducts(productsToShow, totalFilteredCount = 0) {
             const container = document.getElementById('productsList');
             const noProducts = document.getElementById('noProducts');
             
-            if (productsToShow.length === 0) {
+            if (!productsToShow.length) {
                 container.innerHTML = '';
                 noProducts.classList.remove('hidden');
                 return;
@@ -845,60 +1029,81 @@
                 const imageUrl = product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg?height=250&width=350';
                 const formattedPrice = parseInt(product.price || 0).toLocaleString('en-IN');
                 
+                // Collection and Status tones (harmonized with palette)
                 const statusColors = {
-                    active: 'from-green-500 to-emerald-500',
-                    inactive: 'from-yellow-500 to-orange-500',
-                    sold: 'from-red-500 to-pink-500'
+                    active: 'from-emerald-500 to-teal-500',
+                    inactive: 'from-amber-500 to-amber-600',
+                    sold: 'from-sky-600 to-sky-700'
                 };
-                
                 const collectionColors = {
-                    Classic: 'from-purple-500 to-indigo-500',
-                    Sports: 'from-blue-500 to-cyan-500',
-                    Luxury: 'from-yellow-500 to-orange-500'
+                    Classic: 'from-teal-500 to-emerald-500',
+                    Sports: 'from-sky-500 to-sky-600',
+                    Luxury: 'from-amber-500 to-amber-600'
                 };
                 
+                const checked = selectedIds.has(product.id) ? 'checked' : '';
+
                 return `
-                    <div class="product-card-admin rounded-3xl p-6 hover-lift">
-                        <div class="relative mb-6">
-                            <img src="${imageUrl}" 
-                                 alt="${product.name || 'Watch'}" 
-                                 class="w-full h-56 object-cover rounded-2xl shadow-lg"
-                                 onerror="this.src='/placeholder.svg?height=250&width=350'">
-                            <div class="absolute top-4 left-4">
-                                <span class="px-4 py-2 bg-gradient-to-r ${collectionColors[product.collection] || 'from-gray-500 to-gray-600'} text-white text-sm font-semibold rounded-full shadow-lg">
+                    <div class="product-card-admin rounded-3xl p-5 sm:p-6 hover-lift">
+                        <div class="flex items-center justify-between mb-4">
+                            <label class="flex items-center gap-2 text-sm text-white/80">
+                                <input type="checkbox" class="select-product h-4 w-4 rounded border-white/30 bg-transparent" data-id="${product.id}" ${checked} />
+                                Select
+                            </label>
+
+                            Quick status change 
+                            <select class="quick-status futuristic-input px-3 py-2 rounded-lg text-xs" data-id="${product.id}">
+                                <option value="">Set status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+
+                        <div class="relative mb-5 sm:mb-6">
+                            <img 
+                                src="${imageUrl}" 
+                                alt="${product.name || 'Watch'}" 
+                                class="w-full h-48 sm:h-56 object-cover rounded-2xl shadow-lg cursor-zoom-in"
+                                onerror="this.src='/placeholder.svg?height=250&width=350'"
+                                data-id="${product.id}"
+                                data-images='${JSON.stringify(product.images || [imageUrl]).replace(/'/g,"&apos;")}'
+                            >
+                            <div class="absolute top-3 left-3">
+                                <span class="px-3 py-1.5 bg-gradient-to-r ${collectionColors[product.collection] || 'from-sky-600 to-teal-700'} text-white text-xs sm:text-sm font-semibold rounded-full shadow-lg">
                                     ${product.collection || 'Premium'}
                                 </span>
                             </div>
-                            <div class="absolute top-4 right-4">
-                                <span class="px-4 py-2 bg-gradient-to-r ${statusColors[product.status] || 'from-gray-500 to-gray-600'} text-white text-sm font-semibold rounded-full shadow-lg">
+                            <div class="absolute top-3 right-3">
+                                <span class="px-3 py-1.5 bg-gradient-to-r ${statusColors[product.status] || 'from-sky-600 to-teal-700'} text-white text-xs sm:text-sm font-semibold rounded-full shadow-lg">
                                     ${product.status || 'active'}
                                 </span>
                             </div>
                         </div>
                         
-                        <div class="space-y-4">
-                            <h3 class="font-futuristic text-xl font-bold text-white">${product.name || 'Premium Watch'}</h3>
-                            <p class="text-white/70">${product.brand || 'Premium Brand'} • ${product.model || 'Classic'}</p>
-                            <div class="text-3xl font-bold gradient-text">₹${formattedPrice}</div>
+                        <div class="space-y-3 sm:space-y-4">
+                            <h3 class="font-futuristic text-lg sm:text-xl font-bold text-white">${product.name || 'Premium Watch'}</h3>
+                            <p class="text-white/70 text-sm">${product.brand || 'Premium Brand'} • ${product.model || 'Classic'}</p>
+                            <div class="text-2xl sm:text-3xl font-bold gradient-text">₹${formattedPrice}</div>
                             
-                            <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="grid grid-cols-2 gap-3 pt-1 sm:pt-2">
                                 <div class="text-center">
-                                    <div class="text-white/60 text-xs">Movement</div>
-                                    <div class="text-white font-medium text-sm">${product.movementType || 'Auto'}</div>
+                                    <div class="text-white/60 text-[11px] sm:text-xs">Movement</div>
+                                    <div class="text-white font-medium text-xs sm:text-sm">${product.movementType || 'Auto'}</div>
                                 </div>
                                 <div class="text-center">
-                                    <div class="text-white/60 text-xs">Material</div>
-                                    <div class="text-white font-medium text-sm">${product.caseMaterial || 'Steel'}</div>
+                                    <div class="text-white/60 text-[11px] sm:text-xs">Material</div>
+                                    <div class="text-white font-medium text-xs sm:text-sm">${product.caseMaterial || 'Steel'}</div>
                                 </div>
                             </div>
                             
-                            <div class="flex space-x-3 pt-6">
+                            <div class="flex gap-3 pt-4 sm:pt-6">
                                 <button onclick="editProduct('${product.id}')" 
-                                        class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all font-semibold shadow-lg">
+                                        class="flex-1 bg-gradient-to-r from-sky-500 to-teal-600 text-white py-2.5 sm:py-3 px-4 rounded-xl hover:from-sky-600 hover:to-teal-700 transition-all font-semibold shadow-lg text-sm sm:text-base">
                                     Edit
                                 </button>
                                 <button onclick="deleteProduct('${product.id}')" 
-                                        class="flex-1 bg-gradient-to-r from-red-500 to-pink-600 text-white py-3 px-4 rounded-xl hover:from-red-600 hover:to-pink-700 transition-all font-semibold shadow-lg">
+                                        class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2.5 sm:py-3 px-4 rounded-xl hover:from-red-600 hover:to-red-700 transition-all font-semibold shadow-lg text-sm sm:text-base">
                                     Delete
                                 </button>
                             </div>
@@ -906,9 +1111,43 @@
                     </div>
                 `;
             }).join('');
+
+            // Attach dynamic listeners: selection, quick status, image modal
+            container.querySelectorAll('.select-product').forEach(cb => {
+              cb.addEventListener('change', (e) => {
+                const id = e.target.dataset.id;
+                if (e.target.checked) selectedIds.add(id);
+                else selectedIds.delete(id);
+                syncSelectAllCheckbox();
+                updateBulkBar();
+              });
+            });
+
+            container.querySelectorAll('.quick-status').forEach(sel => {
+              sel.addEventListener('change', async (e) => {
+                const id = e.target.dataset.id;
+                const val = e.target.value;
+                if (!val) return;
+                try {
+                  await window.firebaseModules.updateDoc(window.firebaseModules.doc(window.db, 'products', id), { status: val, updatedAt: new Date() });
+                  showNotification('Status updated');
+                  await loadProducts(true);
+                } catch (err) {
+                  console.error('[v0] quick-status error', err);
+                  showNotification('Failed to update status: ' + err.message, 'error');
+                }
+              });
+            });
+
+            container.querySelectorAll('img[data-images]').forEach(img => {
+              img.addEventListener('click', (e) => {
+                const imgs = JSON.parse(e.target.getAttribute('data-images') || '[]');
+                openImageModal(imgs, 0);
+              });
+            });
         }
 
-        // Update stats
+        // Stats re-compute
         function updateStats() {
             const totalProducts = products.length;
             const activeProducts = products.filter(p => p.status === 'active').length;
@@ -919,12 +1158,13 @@
             document.getElementById('totalRevenue').textContent = '₹' + totalValue.toLocaleString('en-IN');
         }
 
+        // Delete
         async function deleteProduct(productId) {
             if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
                 try {
                     await window.firebaseModules.deleteDoc(window.firebaseModules.doc(window.db, 'products', productId));
                     showNotification('Product deleted successfully!');
-                    loadProducts();
+                    await loadProducts(true);
                 } catch (error) {
                     console.error('[v0] Error deleting product:', error);
                     showNotification('Error deleting product: ' + error.message, 'error');
@@ -932,10 +1172,10 @@
             }
         }
 
+        // Edit
         function editProduct(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
-                // Fill form with product data
                 document.getElementById('productName').value = product.name || '';
                 document.getElementById('productCollection').value = product.collection || '';
                 document.getElementById('productPrice').value = product.price || '';
@@ -946,14 +1186,12 @@
                 document.getElementById('productStatus').value = product.status || 'active';
                 document.getElementById('productDescription').value = product.description || '';
                 
-                // Show form
                 document.getElementById('productForm').classList.remove('hidden');
                 document.getElementById('toggleText').textContent = 'Cancel';
                 document.getElementById('submitText').textContent = 'Update Product';
                 
                 editingProductId = productId;
                 
-                // Scroll to form
                 document.getElementById('productForm').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -966,26 +1204,169 @@
             editingProductId = null;
         }
 
-        // Filter functionality
-        document.getElementById('filterCollection').addEventListener('change', filterProducts);
-        document.getElementById('filterStatus').addEventListener('change', filterProducts);
+        // Filtering + searching + sorting + pagination controls
+        document.getElementById('filterCollection').addEventListener('change', () => { currentPage = 1; filterAndRender(); });
+        document.getElementById('filterStatus').addEventListener('change', () => { currentPage = 1; filterAndRender(); });
 
-        function filterProducts() {
-            const collectionFilter = document.getElementById('filterCollection').value;
-            const statusFilter = document.getElementById('filterStatus').value;
-            
-            let filteredProducts = products;
-            
-            if (collectionFilter) {
-                filteredProducts = filteredProducts.filter(p => p.collection === collectionFilter);
-            }
-            
-            if (statusFilter) {
-                filteredProducts = filteredProducts.filter(p => p.status === statusFilter);
-            }
-            
-            displayProducts(filteredProducts);
+        document.getElementById('searchInput').addEventListener('input', debounce((e) => {
+          searchQuery = e.target.value || '';
+          currentPage = 1;
+          filterAndRender();
+        }, 250));
+
+        document.getElementById('sortBy').addEventListener('change', (e) => {
+          sortKey = e.target.value || 'newest';
+          currentPage = 1;
+          filterAndRender();
+        });
+
+        document.getElementById('pageSize').addEventListener('change', (e) => {
+          pageSize = parseInt(e.target.value, 10) || 6;
+          currentPage = 1;
+          filterAndRender();
+        });
+
+        // Bulk selection and actions
+        document.getElementById('selectAll').addEventListener('change', (e) => {
+          if (e.target.checked) {
+            // select all currently visible items
+            document.querySelectorAll('#productsList .select-product').forEach(cb => {
+              cb.checked = true;
+              selectedIds.add(cb.dataset.id);
+            });
+          } else {
+            document.querySelectorAll('#productsList .select-product').forEach(cb => {
+              cb.checked = false;
+              selectedIds.delete(cb.dataset.id);
+            });
+          }
+          updateBulkBar();
+        });
+
+        function syncSelectAllCheckbox() {
+          const visibles = Array.from(document.querySelectorAll('#productsList .select-product'));
+          const selectedVisible = visibles.filter(cb => cb.checked).length;
+          const allChecked = visibles.length > 0 && selectedVisible === visibles.length;
+          document.getElementById('selectAll').checked = allChecked;
         }
+
+        function updateBulkBar() {
+          const bar = document.getElementById('bulkActions');
+          const count = document.getElementById('bulkCount');
+          count.textContent = selectedIds.size;
+          bar.classList.toggle('hidden', selectedIds.size === 0);
+        }
+
+        async function bulkUpdateStatus(status) {
+          const ids = Array.from(selectedIds);
+          if (!ids.length) return;
+          try {
+            for (const id of ids) {
+              await window.firebaseModules.updateDoc(window.firebaseModules.doc(window.db, 'products', id), { status, updatedAt: new Date() });
+            }
+            showNotification('Status updated for selected items');
+            await loadProducts(true);
+          } catch (err) {
+            console.error('[v0] bulkUpdateStatus error', err);
+            showNotification('Failed bulk status update: ' + err.message, 'error');
+          }
+        }
+
+        async function bulkDelete() {
+          const ids = Array.from(selectedIds);
+          if (!ids.length) return;
+          if (!confirm('Delete selected products? This cannot be undone.')) return;
+          try {
+            for (const id of ids) {
+              await window.firebaseModules.deleteDoc(window.firebaseModules.doc(window.db, 'products', id));
+            }
+            selectedIds.clear();
+            showNotification('Selected products deleted');
+            await loadProducts(true);
+          } catch (err) {
+            console.error('[v0] bulkDelete error', err);
+            showNotification('Failed bulk delete: ' + err.message, 'error');
+          }
+        }
+
+        document.getElementById('bulkActive').addEventListener('click', () => bulkUpdateStatus('active'));
+        document.getElementById('bulkInactive').addEventListener('click', () => bulkUpdateStatus('inactive'));
+        document.getElementById('bulkSold').addEventListener('click', () => bulkUpdateStatus('sold'));
+        document.getElementById('bulkDelete').addEventListener('click', () => bulkDelete());
+
+        // CSV Export
+        function exportCSV(rows) {
+          const headers = [
+            'id', 'name', 'collection', 'price', 'brand', 'model',
+            'movementType', 'caseMaterial', 'status', 'createdAt', 'updatedAt'
+          ];
+          const esc = (v) => {
+            if (v == null) return '';
+            const s = String(v).replace(/"/g, '""');
+            return `"${s}"`;
+          };
+
+          const csv = [
+            headers.join(','),
+            ...rows.map(p => headers.map(h => {
+              const v = p[h];
+              if (v instanceof Date) return esc(v.toISOString());
+              return esc(v);
+            }).join(','))
+          ].join('\n');
+
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `products_${Date.now()}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('exportCsvBtn').addEventListener('click', () => {
+          const filtered = applyFilters(products);
+          const sorted = applySort(filtered);
+          exportCSV(sorted);
+          showNotification('CSV exported');
+        });
+
+        // Image Modal
+        function openImageModal(images, index = 0) {
+          activeImages = images && images.length ? images : ['/placeholder.svg?height=640&width=1024'];
+          activeImageIndex = Math.min(Math.max(0, index), activeImages.length - 1);
+          const modal = document.getElementById('imageModal');
+          modal.classList.add('show');
+          updateModalImage();
+        }
+        function updateModalImage() {
+          const img = document.getElementById('modalImage');
+          const counter = document.getElementById('modalCounter');
+          img.src = activeImages[activeImageIndex];
+          counter.textContent = `${activeImageIndex + 1} / ${activeImages.length}`;
+        }
+        function closeModal() {
+          document.getElementById('imageModal').classList.remove('show');
+        }
+        function nextImage() {
+          if (!activeImages.length) return;
+          activeImageIndex = (activeImageIndex + 1) % activeImages.length;
+          updateModalImage();
+        }
+        function prevImage() {
+          if (!activeImages.length) return;
+          activeImageIndex = (activeImageIndex - 1 + activeImages.length) % activeImages.length;
+          updateModalImage();
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+          if (e.target.id === 'imageModal') closeModal();
+        });
+        document.getElementById('modalNext').addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+        document.getElementById('modalPrev').addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
 
         // Make functions globally available
         window.editProduct = editProduct;
